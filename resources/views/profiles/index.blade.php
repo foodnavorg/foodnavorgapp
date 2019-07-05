@@ -5,15 +5,27 @@
     
     <div class="row">
       <div class="col-3 p-5">
-        <img src="https://instagram.fphx1-1.fna.fbcdn.net/vp/a2729ba61f6bf294969f75d3631a6adc/5DB47138/t51.2885-19/s150x150/22709172_932712323559405_7810049005848625152_n.jpg?_nc_ht=instagram.fphx1-1.fna.fbcdn.net" class="rounded-circle">
+        <img src="{{ $user->profile->profileImage() }}" class="rounded-circle w-100">
       </div>
       <div class="col-9 pt-5">
         <div class="d-flex justify-content-between align-items-baseline">
-            <h1>{{ $user->username }}</h1>
-            <a href="#">Add New Post</a>
+            <div class="d-flex align-items-center pb-3">
+              <div class="h4">{{ $user->username }}</div>
+              <follow-button></follow-button>
+            </div>
+            
+            @can ('update', $user->profile)
+              <a href="/p/create">Add New Post</a>
+            @endcan
+            
         </div>
+          
+          @can ('update', $user->profile)
+            <a href="/profile/{{ $user->id }}/edit">Edit Profile</a>
+          @endcan
+          
           <div class="d-flex">
-            <div class="pr-5"><strong>153</strong> posts</div>
+            <div class="pr-5"><strong>{{ $user->products->count() }}</strong> posts</div>
             <div class="pr-5"><strong>22k</strong> followers</div>
             <div class="pr-5"><strong>212</strong> following</div>
           </div>
@@ -24,15 +36,15 @@
     </div>
     
     <div class="row pt-5">
-      <div class="col-4">
-          <img src="https://instagram.fphx1-1.fna.fbcdn.net/vp/be879b655f8e352ba3225b9c7fddcdd9/5DA11054/t51.2885-15/e35/65285896_859971694372408_6053802884198789538_n.jpg?_nc_ht=instagram.fphx1-1.fna.fbcdn.net" class="w-100">
-      </div>
-      <div class="col-4">
-          <img src="https://instagram.fphx1-1.fna.fbcdn.net/vp/be879b655f8e352ba3225b9c7fddcdd9/5DA11054/t51.2885-15/e35/65285896_859971694372408_6053802884198789538_n.jpg?_nc_ht=instagram.fphx1-1.fna.fbcdn.net" class="w-100">
-      </div>
-      <div class="col-4">
-          <img src="https://instagram.fphx1-1.fna.fbcdn.net/vp/be879b655f8e352ba3225b9c7fddcdd9/5DA11054/t51.2885-15/e35/65285896_859971694372408_6053802884198789538_n.jpg?_nc_ht=instagram.fphx1-1.fna.fbcdn.net" class="w-100">
-      </div>
+        @foreach($user->products as $product)
+          <div class="col-4 pb-4">
+            <a href="/p/{{ $product->id }}">
+                <img src="/storage/{{ $product->image }}" class="w-100">
+            </a>
+              
+          </div>
+        @endforeach
+      
 </div>
     
 </div>
